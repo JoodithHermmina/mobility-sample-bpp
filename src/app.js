@@ -19,7 +19,15 @@ import OnSubscribeController from './controllers/OnSubscribeController';
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
-const envFileToConsider = (process.env.MODE === 'cabs') ? 'local.env.cabs' : 'local.env.trains';
+let envFileToConsider;
+switch (process.env.MODE) {
+  case 'PERSONAL_LOAN': envFileToConsider = 'local.env.pl';
+    break;
+  case 'cabs': envFileToConsider = 'local.env.cabs';
+    break;
+  default: envFileToConsider = 'local.env.trains';
+}
+// const envFileToConsider = (process.env.MODE === 'cabs') ? 'local.env.cabs' : 'local.env.trains';
 dotenv.config({ path: path.resolve(process.cwd(), `${envFileToConsider}`), override: true });
 
 process.env.REQUEST_ID = uuid();

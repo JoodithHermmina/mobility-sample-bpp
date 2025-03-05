@@ -33,9 +33,11 @@ const search = async (request) => {
   try {
     const fakeOnSearchResponsebody = filterCategory
       ? readCategorizeResponse(filterCategory) : readAllResponse();
-    fakeOnSearchResponsebody.catalog['bpp/fulfillments'][0].start = request.message.intent.fulfillment.start;
-    fakeOnSearchResponsebody.catalog['bpp/fulfillments'][0].end = request.message.intent.fulfillment.end;
-    fakeOnSearchResponsebody.catalog['bpp/providers'][0].id = providerId;
+    if (process.env.MODE !== 'PERSONAL_LOAN') {
+      fakeOnSearchResponsebody.catalog['bpp/fulfillments'][0].start = request.message.intent.fulfillment.start;
+      fakeOnSearchResponsebody.catalog['bpp/fulfillments'][0].end = request.message.intent.fulfillment.end;
+      fakeOnSearchResponsebody.catalog['bpp/providers'][0].id = providerId;
+    }
     const response = {
       context: ContextBuilder.getContextWithContext(request.context),
       message: fakeOnSearchResponsebody,
